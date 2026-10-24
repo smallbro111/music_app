@@ -109,9 +109,39 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-class ImportScreen extends StatelessWidget {
+class ImportScreen extends StatefulWidget {
   const ImportScreen({super.key});
+
+  @override
+  State<ImportScreen> createState() => _ImportScreenState();
+}
+
+class _ImportScreenState extends State<ImportScreen> {
+  final TextEditingController _controller = TextEditingController();
+  bool _isLoading = false;
+  List<String> _importedTracks = [];
+
+  void _startImport() {
+    final link = _controller.text.trim();
+    if (link.isEmpty) return;
+
+    setState(() {
+      _isLoading = true;
+      _importedTracks.clear();
+    });
+
+    // Имитируем процесс загрузки плейлиста из сети
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false;
+        _importedTracks = [
+          'Трек 1: Исполнитель — Название',
+          'Трек 2: Исполнитель — Название',
+          'Трек 3: Исполнитель — Название',
+        ];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +158,7 @@ class ImportScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
+                controller: _controller,
                 style: const TextStyle(fontSize: 13),
                 decoration: InputDecoration(
                   hintText: 'Вставь ссылку на плейлист...',
@@ -141,6 +172,58 @@ class ImportScreen extends StatelessWidget {
                   prefixIcon: const Icon(Icons.link, color: Colors.white),
                 ),
               ),
+              const SizedBox(height: 15),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _startImport,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: _isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Text(
+                          'Загрузить плейлист',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              if (_importedTracks.isNotEmpty) ...[
+                const Text(
+                  'ИМПОРТИРОВАНО:',
+                  style: TextStyle(fontSize: 12, color: Colors.grey, letterSpacing: 1.2),
+                ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _importedTracks.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF121212),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          _importedTracks[index],
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ],
           ),
         ),
@@ -149,14 +232,4 @@ class ImportScreen extends StatelessWidget {
   }
 }
 
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
-  @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Поиск по сервисам')));
-}
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
-  @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Настройки')));
-}
