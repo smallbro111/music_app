@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyMusicApp());
@@ -13,12 +14,14 @@ class MyMusicApp extends StatelessWidget {
       title: 'Music Hub',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF000000), // AMOLED Black
+        scaffoldBackgroundColor: const Color(0xFF000000), // Pure AMOLED Black
         cardColor: const Color(0xFF121212),
         colorScheme: const ColorScheme.dark(
           primary: Colors.white,
           surface: Color(0xFF121212),
         ),
+        // Подключаем Unbounded для всего приложения
+        textTheme: GoogleFonts.unboundedTextTheme(ThemeData.dark().textTheme),
       ),
       home: const MainScreen(),
     );
@@ -37,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const LibraryScreen(),
+    const ImportScreen(),
     const SearchScreen(),
     const SettingsScreen(),
   ];
@@ -49,10 +52,7 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Color(0xFF0A0A0A),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
+          border: Border(top: BorderSide(color: Color(0xFF1E1E1E), width: 0.5)),
         ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
@@ -61,11 +61,13 @@ class _MainScreenState extends State<MainScreen> {
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.grey[600],
+          selectedLabelStyle: GoogleFonts.unbounded(fontSize: 10, fontWeight: FontWeight.w600),
+          unselectedLabelStyle: GoogleFonts.unbounded(fontSize: 10),
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Главная'),
-            BottomNavigationBarItem(icon: Icon(Icons.folder_copy_outlined), label: 'Медиатека'),
+            BottomNavigationBarItem(icon: Icon(Icons.music_note), label: 'Главная'),
+            BottomNavigationBarItem(icon: Icon(Icons.add_link), label: 'Импорт'),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Поиск'),
-            BottomNavigationBarItem(icon: Icon(Icons.settings_outlined), label: 'Настройки'),
+            BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Настройки'),
           ],
         ),
       ),
@@ -75,24 +77,91 @@ class _MainScreenState extends State<MainScreen> {
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Главная - Релизы', style: TextStyle(color: Colors.white))));
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'MUSIC HUB',
+                style: GoogleFonts.unbounded(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.5,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Единый стриминг без рекламы',
+                style: TextStyle(color: Colors.grey[400], fontSize: 12),
+              ),
+              const Spacer(),
+              Center(
+                child: Icon(Icons.graphic_eq, size: 80, color: Colors.grey[800]),
+              ),
+              const Spacer(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class LibraryScreen extends StatelessWidget {
-  const LibraryScreen({super.key});
+class ImportScreen extends StatelessWidget {
+  const ImportScreen({super.key});
+
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Медиатека / Плейлисты', style: TextStyle(color: Colors.white))));
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'ИМПОРТ',
+                style: GoogleFonts.unbounded(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                style: GoogleFonts.unbounded(fontSize: 13),
+                decoration: InputDecoration(
+                  hintText: 'Вставь ссылку на плейлист...',
+                  hintStyle: TextStyle(color: Colors.grey[600], fontSize: 13),
+                  filled: true,
+                  fillColor: const Color(0xFF121212),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  prefixIcon: const Icon(Icons.link, color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Поиск по сервисам', style: TextStyle(color: Colors.white))));
+  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Поиск по сервисам')));
 }
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Настройки и Мастерская', style: TextStyle(color: Colors.white))));
+  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Настройки')));
 }
+
+
