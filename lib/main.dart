@@ -233,3 +233,28 @@ class _ImportScreenState extends State<ImportScreen> {
 }
 
 
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text('Поиск по сервисам', style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+}
+
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text('Настройки', style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+}
