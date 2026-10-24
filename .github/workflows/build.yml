@@ -29,6 +29,13 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Upgrade Kotlin version
+        run: |
+          cd android
+          sed -i 's/1.7.10/1.9.0/g' build.gradle 2>/dev/null || true
+          sed -i 's/kotlin_version = .*/kotlin_version = "1.9.24"/g' build.gradle 2>/dev/null || true
+          cd ..
+
       - name: Build APK
         run: flutter build apk --release
 
