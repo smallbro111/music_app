@@ -23,21 +23,14 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Create Android files
+      - name: Create Android Scaffold
         run: flutter create . --org com.smallbro.musicapp --platforms=android
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: flutter pub get
 
-      - name: Upgrade Kotlin version
-        run: |
-          cd android
-          sed -i 's/1.7.10/1.9.0/g' build.gradle 2>/dev/null || true
-          sed -i 's/kotlin_version = .*/kotlin_version = "1.9.24"/g' build.gradle 2>/dev/null || true
-          cd ..
-
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --extra-front-end-options=--no-implicit-casts
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
