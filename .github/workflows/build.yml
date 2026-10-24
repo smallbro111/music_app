@@ -23,6 +23,9 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Create Android files
+        run: flutter create . --org com.smallbro.musicapp --platforms=android
+
       - name: Install dependencies
         run: flutter pub get
 
