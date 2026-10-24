@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 void main() {
   runApp(const MyMusicApp());
@@ -119,8 +120,17 @@ class ImportScreen extends StatefulWidget {
 
 class _ImportScreenState extends State<ImportScreen> {
   final TextEditingController _controller = TextEditingController();
+  final AudioPlayer _audioPlayer = AudioPlayer();
   bool _isLoading = false;
+  bool _isPlaying = false;
   List<String> _importedTracks = [];
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
 
   void _startImport() {
     final link = _controller.text.trim();
@@ -135,12 +145,22 @@ class _ImportScreenState extends State<ImportScreen> {
       setState(() {
         _isLoading = false;
         _importedTracks = [
-          'Трек 1: Исполнитель — Название',
-          'Трек 2: Исполнитель — Название',
-          'Трек 3: Исполнитель — Название',
+          'Трек 1: SoundHelix Song 1',
+          'Трек 2: Synthwave Vibes',
+          'Трек 3: Ambient Night',
         ];
       });
     });
+  }
+
+  void _playTestTrack() async {
+    if (_isPlaying) {
+      await _audioPlayer.pause();
+      setState(() => _isPlaying = false);
+    } else {
+      await _audioPlayer.play(UrlSource('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'));
+      setState(() => _isPlaying = true);
+    }
   }
 
   @override
@@ -197,8 +217,44 @@ class _ImportScreenState extends State<ImportScreen> {
                         ),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               if (_importedTracks.isNotEmpty) ...[
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF121212),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.white10),
+                  ),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(_isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled),
+                        iconSize: 42,
+                        color: Colors.white,
+                        onPressed: _playTestTrack,
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Сейчас играет',
+                              style: TextStyle(fontSize: 10, color: Colors.grey),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'SoundHelix - Song 1',
+                              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
                 const Text(
                   'ИМПОРТИРОВАНО:',
                   style: TextStyle(fontSize: 12, color: Colors.grey, letterSpacing: 1.2),
@@ -215,45 +271,3 @@ class _ImportScreenState extends State<ImportScreen> {
                           color: const Color(0xFF121212),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Text(
-                          _importedTracks[index],
-                          style: const TextStyle(fontSize: 13),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Поиск по сервисам', style: TextStyle(color: Colors.white)),
-      ),
-    );
-  }
-}
-
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Настройки', style: TextStyle(color: Colors.white)),
-      ),
-    );
-  }
-}
