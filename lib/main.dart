@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyMusicApp());
@@ -16,7 +15,6 @@ class MyMusicApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF000000), // AMOLED Black
         cardColor: const Color(0xFF121212),
-        textTheme: GoogleFonts.unboundedTextTheme(ThemeData.dark().textTheme),
         colorScheme: const ColorScheme.dark(
           primary: Colors.white,
           surface: Color(0xFF121212),
@@ -219,4 +217,43 @@ class _ImportScreenState extends State<ImportScreen> {
                         ),
                         child: Text(
                           _importedTracks[index],
-                          style: const
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text('Поиск по сервисам', style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+}
+
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text('Настройки', style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+}
