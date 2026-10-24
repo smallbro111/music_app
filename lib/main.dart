@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyMusicApp());
@@ -14,14 +13,12 @@ class MyMusicApp extends StatelessWidget {
       title: 'Music Hub',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF000000), // Pure AMOLED Black
+        scaffoldBackgroundColor: const Color(0xFF000000), // AMOLED Black
         cardColor: const Color(0xFF121212),
         colorScheme: const ColorScheme.dark(
           primary: Colors.white,
           surface: Color(0xFF121212),
         ),
-        // Подключаем Unbounded для всего приложения
-        textTheme: GoogleFonts.unboundedTextTheme(ThemeData.dark().textTheme),
       ),
       home: const MainScreen(),
     );
@@ -61,8 +58,8 @@ class _MainScreenState extends State<MainScreen> {
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.grey[600],
-          selectedLabelStyle: GoogleFonts.unbounded(fontSize: 10, fontWeight: FontWeight.w600),
-          unselectedLabelStyle: GoogleFonts.unbounded(fontSize: 10),
+          selectedLabelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+          unselectedLabelStyle: const TextStyle(fontSize: 10),
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.music_note), label: 'Главная'),
             BottomNavigationBarItem(icon: Icon(Icons.add_link), label: 'Импорт'),
@@ -87,9 +84,9 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'MUSIC HUB',
-                style: GoogleFonts.unbounded(
+                style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.5,
@@ -125,13 +122,13 @@ class ImportScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'ИМПОРТ',
-                style: GoogleFonts.unbounded(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               TextField(
-                style: GoogleFonts.unbounded(fontSize: 13),
+                style: const TextStyle(fontSize: 13),
                 decoration: InputDecoration(
                   hintText: 'Вставь ссылку на плейлист...',
                   hintStyle: TextStyle(color: Colors.grey[600], fontSize: 13),
@@ -163,5 +160,3 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Настройки')));
 }
-
-
